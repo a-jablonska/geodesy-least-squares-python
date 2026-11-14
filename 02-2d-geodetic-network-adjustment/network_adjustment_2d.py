@@ -13,7 +13,7 @@ def wrap_angle(angle: float) -> float:
     return (angle + np.pi) % (2.0 * np.pi) - np.pi
 
 
-def adjust_2d_network(save_plot: bool = True, plot_filename: str = "network_error_ellipses.png"):
+def adjust_2d_network():
     """
     Performs iterative parametric least-squares adjustment (LSA) of a 2D
     angle-distance geodetic network, assesses coordinate and observation accuracy,
@@ -224,7 +224,6 @@ def adjust_2d_network(save_plot: bool = True, plot_filename: str = "network_erro
         # 2x2 sub-covariance matrix for point (X, Y)
         C_pt = CX[i:i + 2, i:i + 2]
         eigvals, eigvecs = np.linalg.eigh(C_pt)
-        # eigvals sorted ascending -> eigvals[1] is major axis squared, eigvals[0] is minor axis squared
         semi_major = np.sqrt(eigvals[1]) * 1000.0  # [mm]
         semi_minor = np.sqrt(eigvals[0]) * 1000.0  # [mm]
 
@@ -304,10 +303,7 @@ def adjust_2d_network(save_plot: bool = True, plot_filename: str = "network_erro
     ax.legend(loc="upper left", frameon=True)
 
     plt.tight_layout()
-    if save_plot:
-        plt.savefig(plot_filename, dpi=300, bbox_inches="tight")
-        print(f"\nSaved network plot to: {plot_filename}")
-    plt.close(fig)
+    plt.show()
 
 
 def main():
